@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 dotenv.config();
+// JWT_TOKEN = process.env.JWT_SECRET;
 
 // Sign up a user
 const signup = async (req, res) => {
@@ -52,7 +53,9 @@ const login = async (req, res) => {
     });
 
     // res.status(200).json({ token, message: "Login successful" });
-    res.status(200).json({ message: "Login successful" });
+    res
+      .status(200)
+      .json({ message: "Login successful! Wellcome " + user.name });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
