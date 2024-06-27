@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const productRoute = require("./routes/product.route.js");
+const authRoute = require("./routes/auth.route.js");
 
 const app = express();
 
@@ -9,11 +10,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.send("Hello from CRUD API Server");
+  res.send("Hello from CRUD API Server!!");
 });
 
 // routes
 app.use("/api/products", productRoute);
+app.use("/api/auth", authRoute);
 
 // database connection
 mongoose
