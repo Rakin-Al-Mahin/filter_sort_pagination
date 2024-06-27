@@ -1,6 +1,9 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 // Sign up a user
 const signup = async (req, res) => {
@@ -44,7 +47,7 @@ const login = async (req, res) => {
     }
 
     // Create a token
-    const token = jwt.sign({ id: user._id }, "rakin_jwt", {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
