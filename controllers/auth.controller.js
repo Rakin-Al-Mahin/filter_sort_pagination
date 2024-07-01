@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 dotenv.config();
-JWT_TOKEN = process.env.JWT_SECRET;
 
 // Sign up a user
 const signup = async (req, res) => {
@@ -48,7 +47,7 @@ const login = async (req, res) => {
     }
 
     // Create a token
-    const token = jwt.sign({ id: user._id }, JWT_TOKEN, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
