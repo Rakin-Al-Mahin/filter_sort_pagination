@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const JWT_TOKEN = process.env.JWT_SECRET;
 
-console.log("JWT_TOKEN:", JWT_TOKEN);
+// console.log("JWT_TOKEN:", JWT_TOKEN);
 
 // Sign up a user
 const signup = async (req, res) => {
