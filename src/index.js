@@ -1,9 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const productRoute = require("./routes/product.route.js");
-const authRoute = require("./routes/auth.route.js");
-const userRoute = require("./routes/user.route.js");
+const productRoute = require("./app/routes/product.route.js");
+const authRoute = require("./app/routes/auth.route.js");
+const userRoute = require("./app/routes/user.route.js");
 
 dotenv.config();
 
@@ -21,6 +21,11 @@ app.get("/", (req, res) => {
 app.use("/api/products", productRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+
+// 404 Error Handler
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Page not found" });
+});
 
 // database connection
 mongoose
