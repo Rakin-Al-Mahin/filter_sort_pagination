@@ -6,21 +6,26 @@ const {
   getProduct,
   updateProduct,
   deleteProduct,
-} = require("../controllers/product.controller.js");
+} = require("../controllers/product.controller");
 
-// create a product
+const {
+  authenticate,
+  authorizeAdmin,
+} = require("../middlewares/auth.middleware");
+
+// Create a product (admin only)
+router.post("/", authenticate, authorizeAdmin, createProduct);
+
+// Get all products
 router.get("/", getProducts);
 
-// read all product
-router.post("/", createProduct);
-
-// read a product
+// Get a product by ID
 router.get("/:id", getProduct);
 
-// update a product
-router.put("/:id", updateProduct);
+// Update a product (admin only)
+router.put("/:id", authenticate, authorizeAdmin, updateProduct);
 
-// delete a product
-router.delete("/:id", deleteProduct);
+// Delete a product (admin only)
+router.delete("/:id", authenticate, authorizeAdmin, deleteProduct);
 
 module.exports = router;

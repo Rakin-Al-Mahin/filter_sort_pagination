@@ -6,12 +6,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 const JWT_TOKEN = process.env.JWT_SECRET;
 
-// console.log("JWT_TOKEN:", JWT_TOKEN);
-
 // Sign up a user
 const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -23,7 +21,7 @@ const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({ name, email, password: hashedPassword, role });
     await user.save();
 
     res.status(201).json({ message: "User created successfully" });
@@ -50,14 +48,13 @@ const login = async (req, res) => {
     }
 
     // Create a token
-    const token = jwt.sign({ id: user._id }, JWT_TOKEN, {
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_TOKEN, {
       expiresIn: "1h",
     });
 
-    // res.status(200).json({ token, message: "Login successful" });
     res
       .status(200)
-      .json({ message: "Login successful! Wellcome " + user.name });
+      .json({ token, message: `Login successful! Welcome ${user.name}` });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
