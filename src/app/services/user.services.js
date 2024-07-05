@@ -1,4 +1,4 @@
-const User = require("../../../mongodb/user.model");
+const User = require("../models/user.model");
 
 // Update user role
 const updateUserRole = async (req, res) => {

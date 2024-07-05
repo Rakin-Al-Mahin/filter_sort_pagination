@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../../../mongodb/user.model");
+const User = require("../models/user.model");
 const dotenv = require("dotenv");
 
 dotenv.config();
