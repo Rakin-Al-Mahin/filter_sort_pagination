@@ -6,7 +6,7 @@ const {
   getProduct,
   updateProduct,
   deleteProduct,
-} = require("../controllers/product.controller");
+} = require("../services/product.services");
 
 const {
   authenticate,
