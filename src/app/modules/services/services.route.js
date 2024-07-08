@@ -6,12 +6,12 @@ const {
   getProduct,
   updateProduct,
   deleteProduct,
-} = require("../services/product.services");
+} = require("./services.controllers");
 
 const {
   authenticate,
   authorizeAdmin,
-} = require("../middlewares/auth.middleware");
+} = require("../../middlewares/auth.middleware");
 
 // Create a product (admin only)
 router.post("/", authenticate, authorizeAdmin, createProduct);

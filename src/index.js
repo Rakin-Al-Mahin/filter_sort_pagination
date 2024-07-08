@@ -1,9 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const productRoute = require("./app/routes/product.route.js");
-const authRoute = require("./app/routes/auth.route.js");
-const userRoute = require("./app/routes/user.route.js");
+const routes = require("./app/routes/routes.index.js");
 
 dotenv.config();
 
@@ -17,10 +15,8 @@ app.get("/", (req, res) => {
   res.send("Hello from CRUD API Server!!");
 });
 
-// routes
-app.use("/api/products", productRoute);
-app.use("/api/auth", authRoute);
-app.use("/api/users", userRoute);
+// main route
+app.use("/api", routes);
 
 // 404 Error Handler
 app.use((req, res, next) => {
