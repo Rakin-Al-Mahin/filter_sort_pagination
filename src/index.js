@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const routes = require("./app/routes/routes.index.js");
+const routes = require("./app/routes/routes.index");
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 app.use("/api", routes);
 
 // 404 Error Handler
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({ message: "Page not found" });
 });
 
