@@ -88,18 +88,27 @@ const facebookStrategy = () => {
 
 // Serialize user
 passport.serializeUser((userObj, done) => {
-  done(null, userObj.user._id);
+// Check if userObj contains user property and user has _id
+if (userObj && userObj.user) {
+    done(null, userObj.user._id);
+} else if (userObj && userObj._id) {
+    // If userObj is the user itself
+    done(null, userObj._id);
+} else {
+    done(new Error("No user object or ID found"), null);
+}
 });
 
 // Deserialize user
 passport.deserializeUser(async (id, done) => {
-  try {
+try {
     const user = await User.findById(id);
     done(null, user);
-  } catch (error) {
+} catch (error) {
     done(error, null);
-  }
+}
 });
+  
 
 module.exports = {
   googleStrategy,
