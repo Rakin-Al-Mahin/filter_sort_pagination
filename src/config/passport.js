@@ -60,7 +60,7 @@ const facebookStrategy = () => {
       {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/api/auth/facebook/callback",
+        callbackURL: "https://filter-sort-pagination.vercel.app/api/auth/facebook/callback",
         profileFields: ["id", "emails", "name"],
       },
       async (accessToken, refreshToken, profile, done) => {
