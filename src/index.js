@@ -4,7 +4,12 @@ const dotenv = require("dotenv");
 // const passport = require("passport");
 const session = require("express-session");
 const routes = require("./app/routes/routes.index");
-const { googleStrategy, facebookStrategy, passport } = require("./config/passport");
+// const { googleStrategy, facebookStrategy, passport } = require("./config/passport");
+const {
+  googleStrategy,
+  facebookStrategy,
+  passport,
+} = require("./app/modules/auth/auth.service");
 
 dotenv.config();
 
@@ -19,11 +24,13 @@ googleStrategy();
 facebookStrategy();
 
 // Express session
-app.use(session({
-  secret: 'your_secret_key',
-  resave: false,
-  saveUninitialized: false,
-}));
+app.use(
+  session({
+    secret: "your_secret_key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 // Passport middleware
 app.use(passport.initialize());

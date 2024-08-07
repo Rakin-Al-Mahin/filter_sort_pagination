@@ -1,5 +1,5 @@
 const { signupService, loginService } = require("./auth.service");
-const passport = require('passport');
+const passport = require("passport");
 
 // Sign up a user
 const signup = async (req, res) => {
@@ -32,15 +32,15 @@ const login = async (req, res) => {
 };
 
 // Google login callback
-const googleCallback = passport.authenticate('google', {
-  failureRedirect: '/login',
-  successRedirect: '/api/dashboard'
+const googleCallback = passport.authenticate("google", {
+  failureRedirect: "/login",
+  successRedirect: "/api/dashboard",
 });
 
 // Facebook login callback
-const facebookCallback = passport.authenticate('facebook', {
-  failureRedirect: '/login',
-  successRedirect: '/api/dashboard'
+const facebookCallback = passport.authenticate("facebook", {
+  failureRedirect: "/login",
+  successRedirect: "/api/dashboard",
 });
 
 module.exports = { signup, login, googleCallback, facebookCallback };
