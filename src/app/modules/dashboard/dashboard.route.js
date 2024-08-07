@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const { authenticate } = require("../../middlewares/auth.middleware");
-// const { googleStrategy, facebookStrategy, passport } = require("../../../config/passport");
 
 // Dashboard route (protected)
 router.get("/", (req, res) => {

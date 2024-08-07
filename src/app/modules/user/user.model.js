@@ -4,22 +4,30 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  // password: { type: String, required: true },
-  password: { type: String},
+  password: {
+    type: String,
+    required: function () {
+      // Password is required only if Google or Facebook ID is not present
+      return !this.googleId && !this.facebookId;
+    },
+  },
   role: {
     type: String,
     enum: ["user", "admin"],
     default: "user",
   },
+  googleId: { type: String },
+  facebookId: { type: String },
 });
 
-// // Custom validation for the password field
-// userSchema.pre("save", function (next) {
-//   if (!this.googleId && !this.password) {
-//     return next(new Error("Password is required"));
+// Optional: Add a custom method to handle setting user details
+// userSchema.methods.setSocialMediaId = function (platform, id) {
+//   if (platform === "google") {
+//     this.googleId = id;
+//   } else if (platform === "facebook") {
+//     this.facebookId = id;
 //   }
-//   next();
-// });
+// };
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
