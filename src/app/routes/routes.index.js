@@ -3,7 +3,7 @@ const authRoute = require("../modules/auth/auth.route.js");
 const userRoute = require("../modules/user/user.route.js");
 const servicesRoute = require("../modules/services/services.route.js");
 const dashboardRoute = require("../modules/dashboard/dashboard.route.js");
-const { ensureAuthenticated } = require("../middlewares/auth.middleware");
+const { socialAuthenticated } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
@@ -11,6 +11,6 @@ const router = express.Router();
 router.use("/auth", authRoute);
 router.use("/users", userRoute);
 router.use("/products", servicesRoute);
-router.use("/dashboard", ensureAuthenticated, dashboardRoute);
+router.use("/dashboard", socialAuthenticated, dashboardRoute);
 
 module.exports = router;

@@ -53,23 +53,20 @@ const loginService = async (email, password) => {
     throw new Error("Invalid email or password");
   }
 
-  // Create a token
-  // const token = jwt.sign({ id: user._id, role: user.role }, JWT_TOKEN, {
-  //   expiresIn: "1h",
-  // });
   const token = generateToken(user);
 
   return { token, message: `Login successful! Welcome ${user.name}` };
 };
 
-// Google sign-in
+// Google signup/signin
 const googleStrategy = () => {
   passport.use(
     new GoogleStrategy(
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://filter-sort-pagination.vercel.app/api/auth/google/callback",
+        // callbackURL: "https://filter-sort-pagination.vercel.app/api/auth/google/callback",
+        callbackURL: "http://localhost:3000/api/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -85,25 +82,26 @@ const googleStrategy = () => {
           }
 
           const token = generateToken(user);
+          const message = `Login successful! Welcome ${user.name}`;
 
-          done(null, { user, token });
+          done(null, { user, token, message });
         } catch (err) {
           done(err, false, err.message);
         }
-        return { token, message: `Login successful! Welcome ${user.name}` };
       }
     )
   );
 };
 
-// Facebook sign-in
+// Facebook signup/signin
 const facebookStrategy = () => {
   passport.use(
     new FacebookStrategy(
       {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-        callbackURL: "https://filter-sort-pagination.vercel.app/api/auth/facebook/callback",
+        // callbackURL: "https://filter-sort-pagination.vercel.app/api/auth/facebook/callback",
+        callbackURL: "http://localhost:3000/api/auth/facebook/callback",
         profileFields: ["id", "emails", "name"],
       },
       async (accessToken, refreshToken, profile, done) => {
@@ -120,12 +118,12 @@ const facebookStrategy = () => {
           }
 
           const token = generateToken(user);
+          const message = `Login successful! Welcome ${user.name}`;
 
-          done(null, user);
+          done(null, { user, token, message });
         } catch (err) {
           done(err, false, err.message);
         }
-        return { token, message: `Login successful! Welcome ${user.name}` };
       }
     )
   );
@@ -133,25 +131,31 @@ const facebookStrategy = () => {
 
 // Serialize user
 passport.serializeUser((userObj, done) => {
-// Check if userObj contains user property and user has _id
-if (userObj && userObj.user) {
+  // Check if userObj contains user property and user has _id
+  if (userObj && userObj.user) {
     done(null, userObj.user._id);
-} else if (userObj && userObj._id) {
+  } else if (userObj && userObj._id) {
     // If userObj is the user itself
     done(null, userObj._id);
-} else {
+  } else {
     done(new Error("No user object or ID found"), null);
-}
+  }
 });
 
 // Deserialize user
 passport.deserializeUser(async (id, done) => {
-try {
+  try {
     const user = await User.findById(id);
     done(null, user);
-} catch (error) {
+  } catch (error) {
     done(error, null);
-}
+  }
 });
 
-module.exports = { signupService, loginService, googleStrategy, facebookStrategy, passport };
+module.exports = {
+  signupService,
+  loginService,
+  googleStrategy,
+  facebookStrategy,
+  passport,
+};
