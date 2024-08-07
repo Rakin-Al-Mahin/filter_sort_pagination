@@ -65,8 +65,9 @@ const googleStrategy = () => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        // callbackURL: "https://filter-sort-pagination.vercel.app/api/auth/google/callback",
-        callbackURL: "http://localhost:3000/api/auth/google/callback",
+        callbackURL:
+          "https://filter-sort-pagination.vercel.app/api/auth/google/callback",
+        // callbackURL: "http://localhost:3000/api/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -100,8 +101,9 @@ const facebookStrategy = () => {
       {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-        // callbackURL: "https://filter-sort-pagination.vercel.app/api/auth/facebook/callback",
-        callbackURL: "http://localhost:3000/api/auth/facebook/callback",
+        callbackURL:
+          "https://filter-sort-pagination.vercel.app/api/auth/facebook/callback",
+        // callbackURL: "http://localhost:3000/api/auth/facebook/callback",
         profileFields: ["id", "emails", "name"],
       },
       async (accessToken, refreshToken, profile, done) => {
