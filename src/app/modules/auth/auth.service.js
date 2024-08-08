@@ -22,35 +22,54 @@ const generateToken = (user) => {
 };
 
 // Service to handle user signup
-const signupService = async (name, email, password, role) => {
+const signupService = async (
+  name,
+  email,
+  password,
+  role,
+  googleId = null,
+  facebookId = null
+) => {
   // Check if user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw new Error("Email already in use");
   }
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(password, 10);
+  // Hash the password if provided (only for email/password signup)
+  const hashedPassword = null;
+  if (password) {
+    hashedPassword = await bcrypt.hash(password, 10);
+  }
 
   // Create new user
-  const user = new User({ name, email, password: hashedPassword, role });
+  const user = new User({
+    name,
+    email,
+    password: hashedPassword,
+    role,
+    googleId,
+    facebookId,
+  });
   await user.save();
 
   return { message: "User created successfully" };
 };
 
 // Service to handle user login
-const loginService = async (email, password) => {
+const loginService = async (email, password = null) => {
   // Find the user by email
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error("Invalid email or password");
   }
 
-  // Check password
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    throw new Error("Invalid email or password");
+  // If password is provided (email/password login), check password
+  if (password) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      throw new Error("Invalid email or password");
+    }
   }
 
   const token = generateToken(user);
@@ -71,19 +90,25 @@ const googleStrategy = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          let user = await User.findOne({ email: profile.emails[0].value });
+          const user = await User.findOne({ email: profile.emails[0].value });
           if (!user) {
-            user = new User({
-              name: profile.displayName,
-              email: profile.emails[0].value,
-              role: "user",
-              googleId: profile.id,
-            });
-            await user.save();
+            // Use signupService to create a new user
+            await signupService(
+              profile.displayName,
+              profile.emails[0].value,
+              null,
+              "user",
+              profile.id,
+              null
+            );
+            user = await User.findOne({ email: profile.emails[0].value });
           }
 
-          const token = generateToken(user);
-          const message = `Login successful! Welcome ${user.name}`;
+          // Use loginService to generate the token and get the message
+          const { token, message } = await loginService(
+            profile.emails[0].value,
+            null
+          );
 
           done(null, { user, token, message });
         } catch (err) {
@@ -108,19 +133,25 @@ const facebookStrategy = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          let user = await User.findOne({ email: profile.emails[0].value });
+          const user = await User.findOne({ email: profile.emails[0].value });
           if (!user) {
-            user = new User({
-              name: `${profile.name.givenName} ${profile.name.familyName}`,
-              email: profile.emails[0].value,
-              role: "user",
-              facebookId: profile.id,
-            });
-            await user.save();
+            // Use signupService to create a new user
+            await signupService(
+              `${profile.name.givenName} ${profile.name.familyName}`,
+              profile.emails[0].value,
+              null,
+              "user",
+              null,
+              profile.id
+            );
+            user = await User.findOne({ email: profile.emails[0].value });
           }
 
-          const token = generateToken(user);
-          const message = `Login successful! Welcome ${user.name}`;
+          // Use loginService to generate the token and get the message
+          const { token, message } = await loginService(
+            profile.emails[0].value,
+            null
+          );
 
           done(null, { user, token, message });
         } catch (err) {
