@@ -248,9 +248,9 @@ const googleStrategy = () => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        // callbackURL:
-        //   "https://filter-sort-pagination.vercel.app/api/auth/google/callback",
-        callbackURL: "http://localhost:3000/api/auth/google/callback",
+        callbackURL:
+          "https://filter-sort-pagination.vercel.app/api/auth/google/callback",
+        // callbackURL: "http://localhost:3000/api/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
