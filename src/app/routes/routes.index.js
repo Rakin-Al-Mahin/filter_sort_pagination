@@ -13,4 +13,8 @@ router.use("/users", userRoute);
 router.use("/products", servicesRoute);
 router.use("/dashboard", socialAuthenticated, dashboardRoute);
 
+router.get("/login", (req, res) => {
+  res.send("Social login failed!!");
+});
+
 module.exports = router;

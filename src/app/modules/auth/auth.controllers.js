@@ -33,13 +33,13 @@ const login = async (req, res) => {
 
 // Google login callback
 const googleCallback = passport.authenticate("google", {
-  failureRedirect: "/login",
+  failureRedirect: "/api/login",
   successRedirect: "/api/dashboard",
 });
 
 // Facebook login callback
 const facebookCallback = passport.authenticate("facebook", {
-  failureRedirect: "/login",
+  failureRedirect: "/api/login",
   successRedirect: "/api/dashboard",
 });
 
