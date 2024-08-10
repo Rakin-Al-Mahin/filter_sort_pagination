@@ -1,12 +1,14 @@
-const express = require("express");
-const {
+import express, { Router } from "express";
+import {
   signup,
   login,
   googleCallback,
   facebookCallback,
-} = require("./auth.controllers");
-const passport = require("passport");
-const router = express.Router();
+} from "./auth.controllers.js";
+import passport from "passport";
+
+const router: Router = express.Router();
+
 // const { authenticate } = require("../../middlewares/auth.middleware");
 
 router.post("/signup", signup);
@@ -26,4 +28,4 @@ router.get(
 );
 router.get("/facebook/callback", facebookCallback);
 
-module.exports = router;
+export default router;

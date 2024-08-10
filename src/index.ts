@@ -1,15 +1,13 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-// const passport = require("passport");
-const session = require("express-session");
-const routes = require("./app/routes/routes.index");
-// const { googleStrategy, facebookStrategy, passport } = require("./config/passport");
-const {
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import session from "express-session";
+import routes from "./app/routes/routes.index.js";
+import {
   googleStrategy,
   facebookStrategy,
   passport,
-} = require("./app/modules/auth/auth.service");
+} from "./app/modules/auth/auth.service.js";
 
 dotenv.config();
 
@@ -26,7 +24,7 @@ facebookStrategy();
 // Express session
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET!,
     resave: false,
     saveUninitialized: false,
   })

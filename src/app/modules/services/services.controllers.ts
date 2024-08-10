@@ -1,37 +1,38 @@
-const {
+import { Request, Response } from "express";
+import {
   createProductService,
   getProductsService,
   getProductService,
   updateProductService,
   deleteProductService,
-} = require("./services.service");
+} from "./services.service.js";
 
 // Create a product
-const createProduct = async (req, res) => {
+const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await createProductService(req.body);
     res.status(200).json(result);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
 // Get all products with filtering, sorting, and pagination
-const getProducts = async (req, res) => {
+const getProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await getProductsService(req.query);
     res.status(200).json(result);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
 // Get a single product
-const getProduct = async (req, res) => {
+const getProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await getProductService(req.params.id);
     res.status(200).json(result);
-  } catch (error) {
+  } catch (error: any) {
     if (error.message === "Product not found") {
       res.status(404).json({ message: error.message });
     } else {
@@ -41,11 +42,11 @@ const getProduct = async (req, res) => {
 };
 
 // Update a product
-const updateProduct = async (req, res) => {
+const updateProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await updateProductService(req.params.id, req.body);
     res.status(200).json(result);
-  } catch (error) {
+  } catch (error: any) {
     if (error.message === "Product not found") {
       res.status(404).json({ message: error.message });
     } else {
@@ -55,11 +56,11 @@ const updateProduct = async (req, res) => {
 };
 
 // Delete a product
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await deleteProductService(req.params.id);
     res.status(200).json(result);
-  } catch (error) {
+  } catch (error: any) {
     if (error.message === "Product not found") {
       res.status(404).json({ message: error.message });
     } else {
@@ -68,10 +69,4 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = {
-  createProduct,
-  getProducts,
-  getProduct,
-  updateProduct,
-  deleteProduct,
-};
+export { createProduct, getProducts, getProduct, updateProduct, deleteProduct };
